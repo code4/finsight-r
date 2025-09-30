@@ -18,12 +18,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const validatedData = feedbackRequestSchema.parse(req.body);
 
       const feedback = await storage.createFeedback({
-        answerId: validatedData.answerId,
-        questionId: validatedData.questionId,
-        question: validatedData.question,
+        answerId: validatedData.answerId || null,
+        questionId: validatedData.questionId || null,
+        question: validatedData.question || null,
         sentiment: validatedData.sentiment,
-        reasons: validatedData.reasons,
-        comment: validatedData.comment,
+        reasons: validatedData.reasons || [],
+        comment: validatedData.comment || null,
       });
 
       return res.status(200).json({

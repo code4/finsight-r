@@ -99,18 +99,19 @@ class QuestionMatchingService {
 const questionMatcher = new QuestionMatchingService();
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  try {
+    // Enable CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+    if (req.method === 'OPTIONS') {
+      return res.status(200).end();
+    }
 
-  if (req.method === 'POST') {
-    try {
-      const validatedData = questionRequestSchema.parse(req.body);
+    if (req.method === 'POST') {
+      try {
+        const validatedData = questionRequestSchema.parse(req.body);
 
       const question = await storage.createQuestion({
         question: validatedData.question,
@@ -175,7 +176,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
       console.error("Error processing question:", error);
       return res.status(500).json({
-        message: "Internal server error while processing question"
+        message: "Internal server error while processing question",
+        error: error instanceof Error ? error.message : String(error)
       });
     }
   }
@@ -186,9 +188,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json(questions);
     } catch (error) {
       console.error("Error fetching review questions:", error);
-      return res.status(500).json({ message: "Failed to fetch questions for review" });
+      return res.status(500).json({
+        message: "Failed to fetch questions for review",
+        error: error instanceof Error ? error.message : String(error)
+      });
     }
   }
 
   return res.status(405).json({ message: 'Method not allowed' });
+  } catch (error) {
+    console.error("Fatal error in questions handler:", error);
+    return res.status(500).json({
+      message: "Fatal server error",
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
 }
