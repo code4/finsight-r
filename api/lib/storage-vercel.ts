@@ -7,7 +7,7 @@ import {
   type InsertAnswer,
   type Feedback,
   type InsertFeedback
-} from "./schema";
+} from "./types";
 import { randomUUID } from "crypto";
 
 // Serverless-compatible storage using memory
