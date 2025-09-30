@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { storage } from '../server/storage-vercel';
-import { feedbackRequestSchema } from '../shared/schema';
+import { storage } from './lib/storage-vercel';
+import { feedbackRequestSchema } from './lib/schema';
 import { z } from 'zod';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

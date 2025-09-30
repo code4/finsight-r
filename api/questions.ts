@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { storage } from '../server/storage-vercel';
-import { questionRequestSchema, type QuestionResponse } from '../shared/schema';
+import { storage } from './lib/storage-vercel';
+import { questionRequestSchema, type QuestionResponse } from './lib/schema';
 import { z } from 'zod';
 
 // Question matching service
