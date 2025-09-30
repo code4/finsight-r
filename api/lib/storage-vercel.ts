@@ -8,7 +8,7 @@ import {
   type Feedback,
   type InsertFeedback
 } from "./types";
-import { randomUUID } from "crypto";
+import crypto from "crypto";
 
 // Serverless-compatible storage using memory
 // Note: In production, you should use a proper database like Neon PostgreSQL
@@ -344,7 +344,7 @@ function initializeDefaultAnswers() {
   ];
 
   for (const answer of defaultAnswers) {
-    const id = randomUUID();
+    const id = crypto.randomUUID();
     const now = new Date();
     const answerObj: Answer = {
       id,
@@ -377,14 +377,14 @@ export class MemStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
+    const id = crypto.randomUUID();
     const user: User = { ...insertUser, id };
     return user;
   }
 
   // Question methods
   async createQuestion(insertQuestion: InsertQuestion): Promise<Question> {
-    const id = randomUUID();
+    const id = crypto.randomUUID();
     const now = new Date();
     const question: Question = {
       id,
@@ -425,7 +425,7 @@ export class MemStorage implements IStorage {
 
   // Answer methods
   async createAnswer(insertAnswer: InsertAnswer): Promise<Answer> {
-    const id = randomUUID();
+    const id = crypto.randomUUID();
     const now = new Date();
     const answer: Answer = {
       id,
@@ -475,7 +475,7 @@ export class MemStorage implements IStorage {
 
   // Feedback methods
   async createFeedback(insertFeedback: InsertFeedback): Promise<Feedback> {
-    const id = randomUUID();
+    const id = crypto.randomUUID();
     const now = new Date();
     const feedback: Feedback = {
       id,
